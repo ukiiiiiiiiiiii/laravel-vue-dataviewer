@@ -11,6 +11,10 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
+Route::get('api/terms', 'TermController@index');
+
 Route::get('/', function () {
     return view('welcome');
 });
