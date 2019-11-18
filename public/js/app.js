@@ -1850,6 +1850,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
@@ -1859,7 +1886,51 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       filterable: {
-        url: '/api/terms'
+        url: '/api/terms',
+        filterGroups: [{
+          name: 'Term',
+          filters: [{
+            title: 'Country',
+            name: 'country',
+            type: 'string'
+          }, {
+            title: 'National term',
+            name: 'national_term',
+            type: 'string'
+          }, {
+            title: 'English term',
+            name: 'english_term',
+            type: 'string'
+          }, {
+            title: 'National definition',
+            name: 'national_definition',
+            type: 'string'
+          }, {
+            title: 'English definition',
+            name: 'english_definition',
+            type: 'string'
+          }, {
+            title: 'English document',
+            name: 'english_document',
+            type: 'string'
+          }, {
+            title: 'National document',
+            name: 'national_document',
+            type: 'string'
+          }, {
+            title: 'Year',
+            name: 'year',
+            type: 'numeric'
+          }, {
+            title: 'National document link',
+            name: 'national_document_link',
+            type: 'string'
+          }, {
+            title: 'English document link',
+            name: 'english_document_link',
+            type: 'string'
+          }]
+        }]
       }
     };
   }
@@ -1880,6 +1951,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1907,11 +2038,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Filterable",
   props: {
-    url: String
+    url: String,
+    filterGroups: Array
   },
   data: function data() {
     return {
       loading: true,
+      appliedFilters: [],
+      filterCandidates: [],
       query: {
         order_column: 'country',
         order_direction: 'asc',
@@ -1926,12 +2060,44 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.fetch();
+    this.addFilter();
   },
   methods: {
+    addFilter: function addFilter() {
+      this.filterCandidates.push({
+        column: '',
+        operator: '',
+        query_1: null,
+        query_2: null
+      });
+    },
+    applyChange: function applyChange() {
+      this.fetch();
+    },
+    updateLimit: function updateLimit() {
+      this.query.page = 1;
+      this.applyChange();
+    },
+    prevPage: function prevPage() {
+      if (this.collection.prev_page_url) {
+        this.query.page = Number(this.query.page) - 1;
+        this.applyChange();
+      }
+    },
+    nextPage: function nextPage() {
+      if (this.collection.next_page_url) {
+        this.query.page = Number(this.query.page) + 1;
+        this.applyChange();
+      }
+    },
     fetch: function fetch() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.url).then(function (res) {
+      var params = _objectSpread({}, this.query);
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.url, {
+        params: params
+      }).then(function (res) {
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this.$data, 'collection', res.data.collection);
         _this.query.page = res.data.collection.current_page;
       })["catch"](function (error) {
@@ -37257,7 +37423,72 @@ var render = function() {
     _c(
       "div",
       { staticClass: "container" },
-      [_c("filterable", _vm._b({}, "filterable", _vm.filterable, false))],
+      [
+        _c(
+          "filterable",
+          _vm._b(
+            {
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return _c("tr", {}, [
+                      _c("td", [_vm._v(_vm._s(item.country))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.national_term))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.english_term))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.national_definition))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.english_definition))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.english_document))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.national_document))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.year))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.national_document_link))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.english_document_link))])
+                    ])
+                  }
+                }
+              ])
+            },
+            "filterable",
+            _vm.filterable,
+            false
+          ),
+          [
+            _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+              _c("tr", [
+                _c("th", [_vm._v("Country")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("National Term")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("English term")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("National definition")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("English definition")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("English document")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("National document")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Year")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Link to the national document")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Link to the English document")])
+              ])
+            ])
+          ]
+        )
+      ],
       1
     )
   ])
@@ -37296,7 +37527,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "filterable mt-3" }, [
-    _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card mb-2" }, [
       _c("div", { staticClass: "card-header" }, [
         _c("div", { staticClass: "d-flex" }, [
           _c("span", { staticClass: "pt-2 pr-2" }, [_vm._v("Terms match")]),
@@ -37344,8 +37575,178 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        _vm._l(_vm.filterCandidates, function(f, i) {
+          return _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "select",
+                {
+                  staticClass: "form-control",
+                  on: {
+                    input: function($event) {
+                      return _vm.selectColumn(f, i, $event)
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Select a filter")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.filterGroups, function(group) {
+                    return _c(
+                      "optgroup",
+                      { attrs: { label: group.name } },
+                      _vm._l(group.filters, function(x) {
+                        return _c(
+                          "option",
+                          {
+                            domProps: {
+                              value: JSON.stringify(x),
+                              selected: f.column && x.name === f.column.name
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(x.title) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  })
+                ],
+                2
+              )
+            ])
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card mb-5" }, [
       _c("div", { staticClass: "card-body" }, [
-        _vm._v("\n            Filterable\n        ")
+        _c(
+          "table",
+          { staticClass: "table" },
+          [
+            _vm._t("thead"),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.collection.data, function(item) {
+                  return _vm.collection.data && _vm.collection.data.length
+                    ? _vm._t("default", null, { item: item })
+                    : _vm._e()
+                })
+              ],
+              2
+            )
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-footer" }, [
+        _c("div", { staticClass: "d-flex justify-content-between" }, [
+          _c("div", [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.query.limit,
+                    expression: "query.limit"
+                  }
+                ],
+                attrs: { disabled: _vm.loading },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.query,
+                        "limit",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    _vm.updateLimit
+                  ]
+                }
+              },
+              [
+                _c("option", [_vm._v("10")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("20")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("40")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("80")])
+              ]
+            ),
+            _vm._v(" "),
+            _c("small", [
+              _vm._v(
+                "Showing " +
+                  _vm._s(_vm.collection.from) +
+                  " - " +
+                  _vm._s(_vm.collection.to) +
+                  " of " +
+                  _vm._s(_vm.collection.total) +
+                  " entries."
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-primary",
+                attrs: {
+                  disabled: !_vm.collection.prev_page_url || _vm.loading
+                },
+                on: { click: _vm.prevPage }
+              },
+              [
+                _vm._v(
+                  "\n                        « Previous\n                    "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-primary",
+                attrs: {
+                  disabled: !_vm.collection.next_page_url || _vm.loading
+                },
+                on: { click: _vm.nextPage }
+              },
+              [_vm._v("\n                        Next »\n                    ")]
+            )
+          ])
+        ])
       ])
     ])
   ])
