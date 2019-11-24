@@ -54,12 +54,12 @@ trait Dataviewer
     protected function allowedOperators()
     {
         return implode(',', [
-            /*'equal_to',
+            'equal_to',
             'not_equal_to',
             'less_than',
             'greater_than',
             'between',
-            'not_between',*/
+            'not_between',
             'contains',
             'starts_with',
             'ends_with',

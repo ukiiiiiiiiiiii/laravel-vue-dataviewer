@@ -1887,6 +1887,37 @@ __webpack_require__.r(__webpack_exports__);
     return {
       filterable: {
         url: '/api/terms',
+        orderables: [{
+          title: 'Country',
+          name: 'country'
+        }, {
+          title: 'National term',
+          name: 'national_term'
+        }, {
+          title: 'English term',
+          name: 'english_term'
+        }, {
+          title: 'National definition',
+          name: 'national_definition'
+        }, {
+          title: 'English definition',
+          name: 'english_definition'
+        }, {
+          title: 'English document',
+          name: 'english_document'
+        }, {
+          title: 'National document',
+          name: 'national_document'
+        }, {
+          title: 'Year',
+          name: 'year'
+        }, {
+          title: 'National document link',
+          name: 'national_document_link'
+        }, {
+          title: 'English document link',
+          name: 'english_document_link'
+        }],
         filterGroups: [{
           name: 'Term',
           filters: [{
@@ -2033,13 +2064,112 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Filterable",
   props: {
     url: String,
-    filterGroups: Array
+    filterGroups: Array,
+    orderables: Array
   },
   data: function data() {
     return {
@@ -2058,11 +2188,113 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
+  computed: {
+    fetchOperators: function fetchOperators() {
+      var _this = this;
+
+      return function (f) {
+        return _this.availableOperators().filter(function (operator) {
+          if (f.column && operator.parent.includes(f.column.type)) {
+            return operator;
+          }
+        });
+      };
+    }
+  },
   mounted: function mounted() {
     this.fetch();
     this.addFilter();
   },
   methods: {
+    updateOrderDirection: function updateOrderDirection() {
+      if (this.query.order_direction === 'desc') {
+        this.query.order_direction = 'asc';
+      } else {
+        this.query.order_direction = 'desc';
+      }
+
+      this.applyChange();
+    },
+    updateOrderColumn: function updateOrderColumn(e) {
+      var value = e.target.value;
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.query, 'order_column', value);
+      this.applyChange();
+    },
+    resetFilter: function resetFilter() {
+      this.appliedFilters.splice(0);
+      this.filterCandidates.splice(0);
+      this.addFilter();
+      this.query.page = 1;
+      this.applyChange();
+    },
+    applyFilter: function applyFilter() {
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.$data, 'appliedFilters', JSON.parse(JSON.stringify(this.filterCandidates)));
+      this.query.page = 1;
+      this.applyChange();
+    },
+    removeFilter: function removeFilter(f, i) {
+      this.filterCandidates.splice(i, 1);
+    },
+    selectOperator: function selectOperator(f, i, e) {
+      var value = e.target.value;
+
+      if (value.length === 0) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', value);
+        return;
+      }
+
+      var obj = JSON.parse(value);
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', obj);
+      this.filterCandidates[i].query_1 = null;
+      this.filterCandidates[i].query_2 = null;
+      /*switch(obj.name) {
+          case 'in_the_past':
+           case 'in_the_next':
+              this.filterCandidates[i].query_1 = 28
+              this.filterCandidates[i].query_2 = 'days'
+              break;
+           case 'in_the_period':
+              this.filterCandidates[i].query_1 = 'today'
+              break;
+      }*/
+    },
+    selectColumn: function selectColumn(f, i, e) {
+      var value = e.target.value;
+
+      if (value.length === 0) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', value);
+        return;
+      }
+
+      var obj = JSON.parse(value);
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', obj);
+
+      switch (obj.type) {
+        case 'numeric':
+          this.filterCandidates[i].operator = this.availableOperators()[4];
+          this.filterCandidates[i].query_1 = null;
+          this.filterCandidates[i].query_2 = null;
+          break;
+
+        case 'string':
+          this.filterCandidates[i].operator = this.availableOperators()[6];
+          this.filterCandidates[i].query_1 = null;
+          this.filterCandidates[i].query_2 = null;
+          break;
+
+        /*case 'datetime':
+            this.filterCandidates[i].operator = this.availableOperators()[9]
+            this.filterCandidates[i].query_1 = 28
+            this.filterCandidates[i].query_2 = 'days'
+            break;*/
+
+        /*case 'counter':
+            this.filterCandidates[i].operator = this.availableOperators()[14]
+            this.filterCandidates[i].query_1 = null
+            this.filterCandidates[i].query_2 = null
+            break;*/
+      }
+    },
     addFilter: function addFilter() {
       this.filterCandidates.push({
         column: '',
@@ -2090,21 +2322,90 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.applyChange();
       }
     },
+    getFilters: function getFilters() {
+      var f = {};
+      this.appliedFilters.forEach(function (filter, i) {
+        f["f[".concat(i, "][column]")] = filter.column.name;
+        f["f[".concat(i, "][operator]")] = filter.operator.name;
+        f["f[".concat(i, "][query_1]")] = filter.query_1;
+        f["f[".concat(i, "][query_2]")] = filter.query_2;
+      });
+      return f;
+    },
     fetch: function fetch() {
-      var _this = this;
+      var _this2 = this;
 
-      var params = _objectSpread({}, this.query);
+      this.loading = true;
+      var filters = this.getFilters();
+
+      var params = _objectSpread({}, filters, {}, this.query);
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.url, {
         params: params
       }).then(function (res) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this.$data, 'collection', res.data.collection);
-        _this.query.page = res.data.collection.current_page;
-      })["catch"](function (error) {
-        console.log(error);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this2.$data, 'collection', res.data.collection);
+        _this2.query.page = res.data.collection.current_page;
+      })["catch"](function (error) {//console.log(error);
       })["finally"](function () {
-        _this.loading = false;
+        _this2.loading = false;
       });
+    },
+    availableOperators: function availableOperators() {
+      return [{
+        title: 'equal to',
+        name: 'equal_to',
+        parent: ['numeric', 'string'],
+        component: 'single'
+      }, {
+        title: 'not equal to',
+        name: 'not_equal_to',
+        parent: ['numeric', 'string'],
+        component: 'single'
+      }, {
+        title: 'less than',
+        name: 'less_than',
+        parent: ['numeric'],
+        component: 'single'
+      }, {
+        title: 'greater than',
+        name: 'greater_than',
+        parent: ['numeric'],
+        component: 'single'
+      }, {
+        title: 'between',
+        name: 'between',
+        parent: ['numeric'],
+        component: 'double'
+      }, {
+        title: 'not between',
+        name: 'not_between',
+        parent: ['numeric'],
+        component: 'double'
+      }, {
+        title: 'contains',
+        name: 'contains',
+        parent: ['string'],
+        component: 'single'
+      }, {
+        title: 'starts with',
+        name: 'starts_with',
+        parent: ['string'],
+        component: 'single'
+      }, {
+        title: 'ends with',
+        name: 'ends_with',
+        parent: ['string'],
+        component: 'single'
+      }
+      /*{title: 'in the past', name: 'in_the_past', parent: ['datetime'], component: 'datetime_1'},
+      {title: 'in the next', name: 'in_the_next', parent: ['datetime'], component: 'datetime_1'},
+      {title: 'in the period', name: 'in_the_period', parent: ['datetime'], component: 'datetime_2'},*/
+
+      /*{title: 'equal to', name: 'equal_to_count', parent: ['counter'], component: 'single'},
+      {title: 'not equal to', name: 'not_equal_to_count', parent: ['counter'], component: 'single'},
+      {title: 'less than', name: 'less_than_count', parent: ['counter'], component: 'single'},
+      {title: 'greater than', name: 'greater_than_count', parent: ['counter'], component: 'single'},*/
+      ];
     }
   }
 });
@@ -37500,7 +37801,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("nav", { staticClass: "navbar navbar-dark bg-dark" }, [
       _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-        _vm._v("Navbar")
+        _vm._v("OSCE")
       ])
     ])
   }
@@ -37578,57 +37879,269 @@ var render = function() {
       _c(
         "div",
         { staticClass: "card-body" },
-        _vm._l(_vm.filterCandidates, function(f, i) {
-          return _c("div", [
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "select",
-                {
-                  staticClass: "form-control",
-                  on: {
-                    input: function($event) {
-                      return _vm.selectColumn(f, i, $event)
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Select a filter")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.filterGroups, function(group) {
-                    return _c(
-                      "optgroup",
-                      { attrs: { label: group.name } },
-                      _vm._l(group.filters, function(x) {
+        [
+          _vm._l(_vm.filterCandidates, function(f, i) {
+            return _c(
+              "div",
+              { staticClass: "d-flex flex-row" },
+              [
+                _c("div", { staticClass: "form-group pr-1" }, [
+                  _c(
+                    "select",
+                    {
+                      staticClass: "form-control",
+                      on: {
+                        input: function($event) {
+                          return _vm.selectColumn(f, i, $event)
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Select a filter")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.filterGroups, function(group) {
                         return _c(
-                          "option",
+                          "optgroup",
+                          { attrs: { label: group.name } },
+                          _vm._l(group.filters, function(x) {
+                            return _c(
+                              "option",
+                              {
+                                domProps: {
+                                  value: JSON.stringify(x),
+                                  selected: f.column && x.name === f.column.name
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(x.title) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                f.column
+                  ? _c("div", [
+                      _c("div", { staticClass: "form-group pr-1" }, [
+                        _c(
+                          "select",
                           {
-                            domProps: {
-                              value: JSON.stringify(x),
-                              selected: f.column && x.name === f.column.name
+                            staticClass: "form-control",
+                            on: {
+                              input: function($event) {
+                                return _vm.selectOperator(f, i, $event)
+                              }
                             }
                           },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(x.title) +
-                                "\n                            "
+                          _vm._l(_vm.fetchOperators(f), function(y) {
+                            return _c(
+                              "option",
+                              {
+                                domProps: {
+                                  value: JSON.stringify(y),
+                                  selected:
+                                    f.operator && y.name === f.operator.name
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(y.title) +
+                                    "\n                            "
+                                )
+                              ]
                             )
-                          ]
+                          }),
+                          0
                         )
-                      }),
-                      0
-                    )
-                  })
-                ],
-                2
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                f.column && f.operator
+                  ? [
+                      f.operator.component === "single"
+                        ? _c("div", { staticClass: "form-group pr-1" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: f.query_1,
+                                  expression: "f.query_1"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: f.query_1 },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(f, "query_1", $event.target.value)
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      f.operator.component === "double"
+                        ? [
+                            _c("div", { staticClass: "form-group pr-1" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: f.query_1,
+                                    expression: "f.query_1"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: f.query_1 },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(f, "query_1", $event.target.value)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group pr-1" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: f.query_2,
+                                    expression: "f.query_2"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: f.query_2 },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(f, "query_2", $event.target.value)
+                                  }
+                                }
+                              })
+                            ])
+                          ]
+                        : _vm._e()
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                f
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-danger mt-1",
+                          on: {
+                            click: function($event) {
+                              return _vm.removeFilter(f, i)
+                            }
+                          }
+                        },
+                        [_vm._v("x")]
+                      )
+                    ])
+                  : _vm._e()
+              ],
+              2
+            )
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-success",
+              on: { click: _vm.addFilter }
+            },
+            [_vm._v("+")]
+          ),
+          _vm._v(" "),
+          this.appliedFilters.length > 0
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-secondary",
+                  on: { click: _vm.resetFilter }
+                },
+                [_vm._v("\n                Reset\n            ")]
               )
-            ])
-          ])
-        }),
-        0
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-primary",
+              on: { click: _vm.applyFilter }
+            },
+            [_vm._v("Apply Filter")]
+          )
+        ],
+        2
       )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card mb-2" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("span", [_vm._v("Order By:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            attrs: { disabled: _vm.loading },
+            on: { input: _vm.updateOrderColumn }
+          },
+          _vm._l(_vm.orderables, function(column) {
+            return _c(
+              "option",
+              {
+                domProps: {
+                  value: column.name,
+                  selected: column && column.name == _vm.query.order_column
+                }
+              },
+              [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(column.title) +
+                    "\n                "
+                )
+              ]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("strong", { on: { click: _vm.updateOrderDirection } }, [
+          _vm.query.order_direction === "asc"
+            ? _c("span", [_vm._v("↑")])
+            : _c("span", [_vm._v("↓")])
+        ])
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card mb-5" }, [

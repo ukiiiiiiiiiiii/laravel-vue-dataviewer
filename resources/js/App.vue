@@ -1,7 +1,7 @@
 <template>
     <div id="root">
         <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">OSCE</a>
         </nav>
         <div class="container">
             <filterable v-bind="filterable">
@@ -47,6 +47,18 @@
             return {
                 filterable: {
                     url:'/api/terms',
+                    orderables: [
+                        {title: 'Country', name: 'country'},
+                        {title: 'National term', name: 'national_term'},
+                        {title: 'English term', name: 'english_term'},
+                        {title: 'National definition', name: 'national_definition'},
+                        {title: 'English definition', name: 'english_definition'},
+                        {title: 'English document', name: 'english_document'},
+                        {title: 'National document', name: 'national_document'},
+                        {title: 'Year', name: 'year'},
+                        {title: 'National document link', name: 'national_document_link'},
+                        {title: 'English document link', name: 'english_document_link'},
+                    ],
                     filterGroups: [
                         {
                             name: 'Term',

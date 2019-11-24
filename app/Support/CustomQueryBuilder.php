@@ -10,7 +10,7 @@ class CustomQueryBuilder
     {
         if(isset($data['f'])) {
             foreach($data['f'] as $filter) {
-                $filter['match'] = isset($data['filter_match']) ? $ $data['filter_match'] : 'and';
+                $filter['match'] = isset($filter['filter_match']) ? $ $filter['filter_match'] : 'and';
                 $this->makeFilter($query, $filter);
             }
         }
@@ -23,7 +23,7 @@ class CustomQueryBuilder
         $this->{Str::camel($filter['operator'])}($filter, $query);
     }
 
-    /*public function equalTo($filter, $query)
+    public function equalTo($filter, $query)
     {
         return $query->where($filter['column'], '=', $filter['query_1'], $filter['match']);
     }
@@ -55,7 +55,7 @@ class CustomQueryBuilder
         return $query->whereNotBetween($filter['column'], [
             $filter['query_1'], $filter['query_2']
         ], $filter['match']);
-    }*/
+    }
 
     /******************** IMPORTANT ********************/
     public function contains($filter, $query)
