@@ -1,8 +1,5 @@
 <template>
     <div id="root">
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">OSCE</a>
-        </nav>
         <div class="container">
             <filterable v-bind="filterable">
                 <thead slot="thead">
@@ -10,26 +7,26 @@
                         <th>Country</th>
                         <th>National Term</th>
                         <th>English term</th>
-                        <th>National definition</th>
+                        <!--<th>National definition</th>
                         <th>English definition</th>
                         <th>English document</th>
                         <th>National document</th>
                         <th>Year</th>
                         <th>Link to the national document</th>
-                        <th>Link to the English document</th>
+                        <th>Link to the English document</th>-->
                     </tr>
                 </thead>
                 <tr slot-scope="{item}">
                     <td>{{item.country}}</td>
                     <td>{{item.national_term}}</td>
                     <td>{{item.english_term}}</td>
-                    <td>{{item.national_definition}}</td>
+                    <!--<td>{{item.national_definition}}</td>
                     <td>{{item.english_definition}}</td>
                     <td>{{item.english_document}}</td>
                     <td>{{item.national_document}}</td>
                     <td>{{item.year}}</td>
                     <td>{{item.national_document_link}}</td>
-                    <td>{{item.english_document_link}}</td>
+                    <td>{{item.english_document_link}}</td>-->
                 </tr>
             </filterable>
         </div>

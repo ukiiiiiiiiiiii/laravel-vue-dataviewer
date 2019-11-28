@@ -21,7 +21,7 @@
                     <div class="form-group pr-1">
                         <select class="form-control" @input="selectColumn(f, i, $event)">
                             <option value="">Select a filter</option>
-                            <optgroup v-for="group in filterGroups" :label="group.name">
+                            <optgroup v-for="group in filterGroups" :label="group.name" >
                                 <option v-for="x in group.filters"
                                     :value="JSON.stringify(x)"
                                     :selected="f.column && x.name === f.column.name"

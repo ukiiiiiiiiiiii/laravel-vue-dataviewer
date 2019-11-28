@@ -1874,9 +1874,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
@@ -37719,8 +37716,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "root" } }, [
-    _vm._m(0),
-    _vm._v(" "),
     _c(
       "div",
       { staticClass: "container" },
@@ -37739,21 +37734,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(item.national_term))]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.english_term))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.national_definition))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.english_definition))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.english_document))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.national_document))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.year))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.national_document_link))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.english_document_link))])
+                      _c("td", [_vm._v(_vm._s(item.english_term))])
                     ])
                   }
                 }
@@ -37770,21 +37751,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("th", [_vm._v("National Term")]),
                 _vm._v(" "),
-                _c("th", [_vm._v("English term")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("National definition")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("English definition")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("English document")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("National document")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Year")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Link to the national document")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Link to the English document")])
+                _c("th", [_vm._v("English term")])
               ])
             ])
           ]
@@ -37794,18 +37761,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("nav", { staticClass: "navbar navbar-dark bg-dark" }, [
-      _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-        _vm._v("OSCE")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
