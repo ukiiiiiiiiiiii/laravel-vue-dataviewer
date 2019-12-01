@@ -1,18 +1,6 @@
 <template>
     <div class="filterable mt-3">
         <div class="card mb-2">
-            <div class="card-header">
-                <div class="d-flex">
-                    <span class="pt-2 pr-2">Terms match</span>
-
-                    <select v-model="query.filter_match" class="form-control col-3">
-                        <option value="and">All</option>
-                        <option value="or">Any</option>
-                    </select>
-
-                    <span class="pt-2 pl-2">of the following: </span>
-                </div>
-            </div>
 
             <div class="card-body">
 
@@ -134,7 +122,7 @@
 
         <div class="card mb-5">
             <div class="card-body">
-                <table class="table">
+                <!--<table class="table">
                     <slot name="thead"></slot>
                     <tbody>
                     <slot v-if="collection.data && collection.data.length"
@@ -142,7 +130,20 @@
                           :item="item"
                     ></slot>
                     </tbody>
-                </table>
+                </table>-->
+
+                <div v-if="collection.data && collection.data.length"
+                      v-for="(item,key) in collection.data"
+                      :item="item"
+                      :key="item.id"
+                >
+                    {{item.country}}
+                    {{item.national_term}}
+                    {{item.english_term}}
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" @click="showTerm(key)">
+                        >
+                    </button>
+                </div>
             </div>
 
             <div class="card-footer">
@@ -165,6 +166,35 @@
                         <button class="btn btn-sm btn-primary" :disabled="!collection.next_page_url || loading" @click="nextPage">
                             Next &raquo;
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Country: {{show.country}} <br>
+                        National term: {{show.national_term}} <br>
+                        English term: {{show.english_term}} <br>
+                        National definition: {{show.national_definition}} <br>
+                        English definition: {{show.english_definition}} <br>
+                        English document: {{show.english_document}} <br>
+                        National deocument: {{show.national_document}} <br>
+                        Year: {{show.year}} <br>
+                        National document link: {{show.national_document_link}} <br>
+                        English document link: {{show.english_document_link}} <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -192,13 +222,14 @@
                 query: {
                     order_column: 'country',
                     order_direction: 'asc',
-                    filter_match: 'and',
+                    filter_match: 'or',
                     limit: 10,
                     page: 1
                 },
                 collection: {
                     data: []
-                }
+                },
+                show:''
             }
         },
 
@@ -220,6 +251,10 @@
         },
 
         methods: {
+            showTerm(key){
+                this.show = this.collection.data[key];
+                //console.log(this.show);
+            },
             updateOrderDirection() {
                 if(this.query.order_direction === 'desc') {
                     this.query.order_direction = 'asc'

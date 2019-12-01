@@ -1847,33 +1847,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
@@ -2159,6 +2132,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2176,13 +2179,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       query: {
         order_column: 'country',
         order_direction: 'asc',
-        filter_match: 'and',
+        filter_match: 'or',
         limit: 10,
         page: 1
       },
       collection: {
         data: []
-      }
+      },
+      show: ''
     };
   },
   computed: {
@@ -2203,6 +2207,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.addFilter();
   },
   methods: {
+    showTerm: function showTerm(key) {
+      this.show = this.collection.data[key]; //console.log(this.show);
+    },
     updateOrderDirection: function updateOrderDirection() {
       if (this.query.order_direction === 'desc') {
         this.query.order_direction = 'asc';
@@ -37719,44 +37726,7 @@ var render = function() {
     _c(
       "div",
       { staticClass: "container" },
-      [
-        _c(
-          "filterable",
-          _vm._b(
-            {
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _c("tr", {}, [
-                      _c("td", [_vm._v(_vm._s(item.country))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.national_term))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.english_term))])
-                    ])
-                  }
-                }
-              ])
-            },
-            "filterable",
-            _vm.filterable,
-            false
-          ),
-          [
-            _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
-              _c("tr", [
-                _c("th", [_vm._v("Country")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("National Term")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("English term")])
-              ])
-            ])
-          ]
-        )
-      ],
+      [_c("filterable", _vm._b({}, "filterable", _vm.filterable, false))],
       1
     )
   ])
@@ -37785,53 +37755,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "filterable mt-3" }, [
     _c("div", { staticClass: "card mb-2" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("div", { staticClass: "d-flex" }, [
-          _c("span", { staticClass: "pt-2 pr-2" }, [_vm._v("Terms match")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.query.filter_match,
-                  expression: "query.filter_match"
-                }
-              ],
-              staticClass: "form-control col-3",
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.query,
-                    "filter_match",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "and" } }, [_vm._v("All")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "or" } }, [_vm._v("Any")])
-            ]
-          ),
-          _vm._v(" "),
-          _c("span", { staticClass: "pt-2 pl-2" }, [
-            _vm._v("of the following: ")
-          ])
-        ])
-      ]),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "card-body" },
@@ -38101,28 +38024,43 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card mb-5" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          { staticClass: "table" },
-          [
-            _vm._t("thead"),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _vm._l(_vm.collection.data, function(item) {
-                  return _vm.collection.data && _vm.collection.data.length
-                    ? _vm._t("default", null, { item: item })
-                    : _vm._e()
-                })
-              ],
-              2
-            )
-          ],
-          2
-        )
-      ]),
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        _vm._l(_vm.collection.data, function(item, key) {
+          return _vm.collection.data && _vm.collection.data.length
+            ? _c("div", { key: item.id, attrs: { item: item } }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(item.country) +
+                    "\n                " +
+                    _vm._s(item.national_term) +
+                    "\n                " +
+                    _vm._s(item.english_term) +
+                    "\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-primary",
+                    attrs: {
+                      type: "button",
+                      "data-toggle": "modal",
+                      "data-target": "#exampleModal"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.showTerm(key)
+                      }
+                    }
+                  },
+                  [_vm._v("\n                    >\n                ")]
+                )
+              ])
+            : _vm._e()
+        }),
+        0
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer" }, [
         _c("div", { staticClass: "d-flex justify-content-between" }, [
@@ -38217,10 +38155,145 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "exampleModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _vm._v(
+                  "\n                    Country: " +
+                    _vm._s(_vm.show.country) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    National term: " +
+                    _vm._s(_vm.show.national_term) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    English term: " +
+                    _vm._s(_vm.show.english_term) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    National definition: " +
+                    _vm._s(_vm.show.national_definition) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    English definition: " +
+                    _vm._s(_vm.show.english_definition) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    English document: " +
+                    _vm._s(_vm.show.english_document) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    National deocument: " +
+                    _vm._s(_vm.show.national_document) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    Year: " + _vm._s(_vm.show.year) + " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    National document link: " +
+                    _vm._s(_vm.show.national_document_link) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                    English document link: " +
+                    _vm._s(_vm.show.english_document_link) +
+                    " "
+                ),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Modal title")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save changes")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

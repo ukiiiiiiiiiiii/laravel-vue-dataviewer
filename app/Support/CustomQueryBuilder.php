@@ -10,7 +10,7 @@ class CustomQueryBuilder
     {
         if(isset($data['f'])) {
             foreach($data['f'] as $filter) {
-                $filter['match'] = isset($filter['filter_match']) ? $ $filter['filter_match'] : 'and';
+                $filter['match'] = 'and';
                 $this->makeFilter($query, $filter);
             }
         }
